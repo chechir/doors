@@ -25,7 +25,7 @@ def test_time_series_cv_ixs_start_and_stop():
     dates = np.arange(100)
     decimal_ixs = modelling.get_time_series_cv_ixs(dates, folds=1, start=0.5, stop=0.75)
     other_ixs = modelling.get_time_series_cv_ixs(dates, folds=1, start=50, stop=75)
-    for i, ixs in enumerate([decimal_ixs, other_ixs]):
+    for _, ixs in enumerate([decimal_ixs, other_ixs]):
         ixs = ixs[0]["val"]
         expected = np.repeat(False, 100)
         expected[50:75] = True

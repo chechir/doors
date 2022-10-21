@@ -1,4 +1,5 @@
 import numpy as np
+import pandas as pd
 from doors.np import rolling_mean
 from matplotlib import pyplot as plt
 from matplotlib_venn import venn2
@@ -58,3 +59,14 @@ def plot_venn2_primary_secondary(elements_by_group, venn_values, ax):
     plt.show()
 
     return v
+
+
+def get_correlations_for_col(df: pd.DataFrame, col: str, top=20) -> pd.DataFrame:
+    corr = df.corr()[col]
+    corr = pd.DataFrame(
+        {
+            "abs": corr.abs(),
+            "corr": corr,
+        }
+    )
+    return corr

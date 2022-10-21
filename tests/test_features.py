@@ -37,7 +37,7 @@ def test_grouped_lagged_decay_with_nans():
     assert np.allclose(expected, result)
 
 
-def test_datys_to_first_event():
+def test_days_to_first_event():
     df = pd.DataFrame(
         {
             "scheduled_time": np.array(
