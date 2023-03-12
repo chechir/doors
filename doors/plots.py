@@ -62,7 +62,7 @@ def plot_venn2_primary_secondary(elements_by_group, venn_values, ax):
 
 
 def get_correlations_for_col(df: pd.DataFrame, col: str, top=20) -> pd.DataFrame:
-    corr = df.corr()[col]
+    corr = df.corr(numeric_only=True)[col]
     corr = pd.DataFrame(
         {
             "abs": corr.abs(),
