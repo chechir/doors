@@ -18,7 +18,7 @@ def gaussian_function(x, location, height, width):
     Returns:
         array_like: values of the gaussian function
     """
-    fx = height * np.exp(-((x - location) ** 2) / (2 * width ** 2))
+    fx = height * np.exp(-((x - location) ** 2) / (2 * width**2))
     return fx
 
 

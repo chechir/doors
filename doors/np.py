@@ -13,7 +13,7 @@ import pandas as pd
 
 
 def IQR(v):
-    """ Caclualtes intercuantile range (for Jason)"""
+    """Caclualtes intercuantile range (for Jason)"""
     series = pd.Series(v)
     q75 = series.quantile(0.75)
     q25 = series.quantile(0.25)
@@ -21,7 +21,7 @@ def IQR(v):
 
 
 def moving_average(array, window, center=False, min_periods=1):
-    """ may be not the fastest option for long arrays """
+    """may be not the fastest option for long arrays"""
     return (
         pd.DataFrame(array)
         .rolling(window, center=center, min_periods=min_periods)
@@ -32,7 +32,7 @@ def moving_average(array, window, center=False, min_periods=1):
 
 
 def moving_median(array, window, center=False):
-    """ may be not the fastest option for long arrays """
+    """may be not the fastest option for long arrays"""
     return (
         pd.DataFrame(array)
         .rolling(window, center=center, min_periods=1)
@@ -165,7 +165,7 @@ def _add_strings(v, w):
 
 
 def get_group_ixs(*group_ids, **kwargs):
-    """ Returns a dictionary {groupby_id: group_ix}.
+    """Returns a dictionary {groupby_id: group_ix}.
 
     group_ids:
         List of IDs to groupbyy
@@ -224,7 +224,7 @@ def get_unique_values_in_order(values):
 
 
 def change_flag(arr, init=0):
-    """ [1,1,2,3,1] --> [init, 0, 1, 1, 1] """
+    """[1,1,2,3,1] --> [init, 0, 1, 1, 1]"""
     values = np.repeat(None, len(arr))
     values[0] = 0
     values[1:] = (arr[1:] != arr[:-1]).astype(int)
@@ -232,7 +232,7 @@ def change_flag(arr, init=0):
 
 
 def get_new_value_flags(values):
-    """ Goes through the values and flags unique values it has not seen before.
+    """Goes through the values and flags unique values it has not seen before.
     Example:
         values = [A, B, C, A, A, D] --> [True, True, True, False, False, True]
     """
@@ -267,7 +267,7 @@ def replace(values, mapping_dict):
 
 
 def nan_equality(ax, bx):
-    """ Compares two arrays, nans are equal. """
+    """Compares two arrays, nans are equal."""
     if not isinstance(ax, np.ndarray) and not isinstance(ax, list):
         ax = np.array([ax])
     if not isinstance(bx, np.ndarray) and not isinstance(bx, list):
@@ -289,7 +289,7 @@ def nan_equality(ax, bx):
 
 
 def ffill(values):
-    """ vector only """
+    """vector only"""
     assert len(values.shape) == 1 or values.shape[1] == 1, "ffill only works for vector"
     values = np.atleast_2d(values)
     mask = is_null(values)

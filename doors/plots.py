@@ -1,9 +1,10 @@
 import numpy as np
 import pandas as pd
-from doors.np import rolling_mean
 from matplotlib import pyplot as plt
 from matplotlib_venn import venn2
 from sklearn import linear_model, preprocessing
+
+from doors.np import rolling_mean
 
 
 def add_best_fit_curve(x, y, degree, fit_intercept, **kwargs):
@@ -37,7 +38,7 @@ def make_polynomial_mm(x, degree):
 
 
 def plot_venn2_primary_secondary(elements_by_group, venn_values, ax):
-    """ Plot venn diagram of 2 groups
+    """Plot venn diagram of 2 groups
     it needs the elements_by_group (all elements that belong to a group,
     so if "element1" apears in A and B, it will apear in (A, b), (A, ), and (B, )
     venn_values: same as interactions but only shows elements once

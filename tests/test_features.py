@@ -2,6 +2,7 @@
 # pylint: disable=invalid-name
 import numpy as np
 import pandas as pd
+
 from doors.features import (
     categorical_to_frequency,
     days_to_first_event,
@@ -23,7 +24,7 @@ def test_grouped_lagged_decay():
     df = pd.DataFrame({"ticker_name": ["x", "x", "x", "x"], "win_flag": [1, 0, 1, 0]})
 
     result = grouped_lagged_decay(df, "ticker_name", "win_flag")
-    expected = [0, 1, (0 + 1 * np.e ** -1), (1 + 0 * np.e ** -1 + 1 * np.e ** -2)]
+    expected = [0, 1, (0 + 1 * np.e**-1), (1 + 0 * np.e**-1 + 1 * np.e**-2)]
     assert np.allclose(expected, result)
 
 
@@ -33,7 +34,7 @@ def test_grouped_lagged_decay_with_nans():
     )
 
     result = grouped_lagged_decay(df, "ticker_name", "win_flag")
-    expected = [0, 1, (0 + 1 * np.e ** -1), (0 + 0 * np.e ** -1 + 1 * np.e ** -2)]
+    expected = [0, 1, (0 + 1 * np.e**-1), (0 + 0 * np.e**-1 + 1 * np.e**-2)]
     assert np.allclose(expected, result)
 
 

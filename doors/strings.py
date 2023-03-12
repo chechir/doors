@@ -6,6 +6,7 @@ import re
 from string import punctuation as PUNCTUATIONS
 
 import numpy as np
+
 from doors.dates import get_timestamp
 
 SPECIAL_PUNCTUATIONS = PUNCTUATIONS.replace("_", "")
@@ -42,7 +43,7 @@ def get_pronounceable_name():
 
 
 def get_unique_id():
-    """ Pronounceable hash to be pronounced more or less ecclesiastically.
+    """Pronounceable hash to be pronounced more or less ecclesiastically.
     More details: https://www.ewtn.com/expert/answers/ecclesiastical_latin.htm
     """
     return get_pronounceable_name() + "_" + get_timestamp("%y%m%d_%H%M%S")

@@ -40,7 +40,7 @@ def get_elements_for_each_combination(df, group_col, id_col):
 
 
 def get_all_combinations(elements):
-    """ get all combinations for a venn diagram from a list of elements"""
+    """get all combinations for a venn diagram from a list of elements"""
     result = []
     n = len(elements)
     for i in range(n):
@@ -50,8 +50,8 @@ def get_all_combinations(elements):
 
 
 def get_venn_elements_from_interactions(all_intersections):
-    """ filter out duplicated elements within intersections
-        to build the venn diagram elements """
+    """filter out duplicated elements within intersections
+    to build the venn diagram elements"""
 
     def filter_elements(int_name, elements, other_intersections):
         elements_in_other_intersections = []

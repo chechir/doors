@@ -2,9 +2,10 @@ import logging
 import time
 from multiprocessing import JoinableQueue, Manager, Process
 
-import doors as wu
 import numpy as np
 import pandas as pd
+
+import doors as wu
 
 FEATURE_PREFIX = "feat:"
 
@@ -153,7 +154,7 @@ class ParallelAddFeaturesMixin(object):
         self._queue.put(feat)
 
     def _terminate(self):
-        """ wait until queue is empty and terminate processes """
+        """wait until queue is empty and terminate processes"""
         self._queue.join()
         for p in self.processes:
             p.terminate()

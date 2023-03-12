@@ -55,7 +55,7 @@ def replace_timestamp(string):
 
 
 def get_diff_in_days(dates, add_init=False):
-    """ Gives the difference in days for datetime64 objects """
+    """Gives the difference in days for datetime64 objects"""
     diff_date = np.diff(dates)
     delta_minutes = diff_date.astype("timedelta64[m]") / np.timedelta64(1, "m")
     delta_days = 1.0 * delta_minutes / (60 * 24)
@@ -65,7 +65,7 @@ def get_diff_in_days(dates, add_init=False):
 
 
 def cum_diff_years(dates, init=0):
-    """ Calculates cumulative difference in years betweeon dates[i] and date[] """
+    """Calculates cumulative difference in years betweeon dates[i] and date[]"""
     experience_days = np.empty(len(dates))
     experience_days[1:] = np.cumsum(get_diff_in_days(dates))
     experience_days[0] = init
@@ -129,7 +129,7 @@ def round_datetime64(v, to="s"):
 
 
 def get_timestamp(time_format="%Y%m%d_%H%M%S"):
-    """ Returns a timestamp by checking the date and time at the moment. """
+    """Returns a timestamp by checking the date and time at the moment."""
     return str(datetime.datetime.utcnow().strftime(time_format))
 
 

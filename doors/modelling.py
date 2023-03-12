@@ -66,11 +66,11 @@ def apply_svd(df, test=None, n_components=20, n_iter=5):
 def ks_feat_selection(
     train, test, threshold=0.05, return_pvals=False, alternative="two-sided"
 ):
-    """ the 2 samples are assumed to be continuos
-        p-value is high,
-        then we cannot reject the hypothesis that the distributions of the
-        two samples are the same.
-        so, high p-value = feature good
+    """the 2 samples are assumed to be continuos
+    p-value is high,
+    then we cannot reject the hypothesis that the distributions of the
+    two samples are the same.
+    so, high p-value = feature good
     """
     pcol = []
     pval = []
@@ -101,8 +101,8 @@ def pearsonr_feat_selection(df, target, threshold=0.05, return_pvals=False):
 
 
 def get_consecutive_fold_ixs(df, n_fold=6):
-    """ obtain consequtive fold ixs. They have to divide exactly by n
-        used by earthquake competition
+    """obtain consequtive fold ixs. They have to divide exactly by n
+    used by earthquake competition
     """
     n = len(df)
     result = []

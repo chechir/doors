@@ -6,7 +6,7 @@ import pandas as pd
 
 
 def append_csv(data, path):
-    """ append to a csv """
+    """append to a csv"""
     assert path.endswith(".csv")
     to_log = data if isinstance(data, pd.DataFrame) else pd.DataFrame(data)
     if "~" in path:
@@ -20,10 +20,10 @@ def append_csv(data, path):
 
 
 def ensure_dir_exists(path):
-    """ Takes path like:
-           /path/to/test.pkl  OR
-           /path/to/
-        Ensures directory exists so file can be writen
+    """Takes path like:
+       /path/to/test.pkl  OR
+       /path/to/
+    Ensures directory exists so file can be writen
     """
     if "." in path.split("/")[-1]:
         directory = "/".join(path.split("/")[:-1])
@@ -67,8 +67,8 @@ def read_json_per_line(path):
 
 
 def write_json_per_line(list_of_data, path):
-    """ Each element in list_of_data will be written
-        to path as a json on its own line. """
+    """Each element in list_of_data will be written
+    to path as a json on its own line."""
     ensure_dir_exists(path)
     assert isinstance(list_of_data, list), "data must be list"
     with open(path, "a") as fhandler:

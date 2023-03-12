@@ -1,7 +1,8 @@
 import datetime
 
-import doors as dd
 import numpy as np
+
+import doors as dd
 
 
 def test_get_season():

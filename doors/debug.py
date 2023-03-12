@@ -3,7 +3,7 @@ from functools import partial
 
 
 def time_func(func):
-    """ A decorator that will print the time a function took to run. """
+    """A decorator that will print the time a function took to run."""
 
     def time_func_wrapped(*args, **kwargs):
         func_name = _get_func_name(func)
@@ -23,7 +23,7 @@ def time_func(func):
 
 
 def _get_func_name(func):
-    """ Defines a general convention for giving labels to functions. """
+    """Defines a general convention for giving labels to functions."""
     if hasattr(func, "__name__"):
         func_name = func.__name__
     elif isinstance(func, partial):
@@ -34,7 +34,7 @@ def _get_func_name(func):
 
 
 def _make_partial_function_name(funcn):
-    """ Defines convention to labelling a partialised function. """
+    """Defines convention to labelling a partialised function."""
     assert isinstance(funcn, partial), "This function requires a partial fn."
     out = funcn.func.__name__
     for key, value in funcn.keywords.iteritems():

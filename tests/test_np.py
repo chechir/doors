@@ -3,6 +3,7 @@
 import numpy as np
 import pandas as pd
 import pytest
+
 from doors import np as utils_np
 
 
@@ -57,9 +58,9 @@ def test_nan_equality():
     # vector-scalar
     tens = np.repeat(10, 5)
     nans = np.repeat(np.nan, 5)
-    strings = np.repeat(u"a", 5)
+    strings = np.repeat("a", 5)
     objects = np.array(["a", np.nan], dtype="O")
-    assert all(utils_np.nan_equality(strings, u"a"))
+    assert all(utils_np.nan_equality(strings, "a"))
     assert all(utils_np.nan_equality(tens, 10))
     assert all(utils_np.nan_equality(nans, np.nan))
     assert any(utils_np.nan_equality(objects, np.nan))
