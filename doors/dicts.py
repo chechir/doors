@@ -12,7 +12,6 @@ def flatten_dict(nested: dict) -> dict:
     """
     ans = {}
     for key, val in nested.items():
-
         # if val is a dict, unflatten val, recursively
         if isinstance(val, dict):
             flattened = flatten_dict(val)

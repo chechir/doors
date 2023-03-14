@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+import seaborn as sns
 from matplotlib import pyplot as plt
 from matplotlib_venn import venn2
 from sklearn import linear_model, preprocessing
@@ -71,3 +72,30 @@ def get_correlations_for_col(df: pd.DataFrame, col: str, top=20) -> pd.DataFrame
         }
     )
     return corr
+
+
+def plot_pairplot_in_sections(
+    data: pd.DataFrame,
+    target_name: str,
+    feats: list,
+    sample=200,
+    n_feats_to_plot=5,
+    hue_col=False,
+    corner=True,
+    legend=True,
+):
+    for i in range(0, len(feats), n_feats_to_plot):
+        start = i
+        if i + n_feats_to_plot > len(feats):
+            end = len(feats)
+        else:
+            end = i + n_feats_to_plot
+        if hue_col:
+            plot_cols = [target_name] + feats[start:end] + [hue_col]
+        else:
+            plot_cols = [target_name] + feats[start:end]
+
+        g = sns.pairplot(data[plot_cols].sample(sample), hue=hue_col, corner=corner)
+        if not legend:
+            g._legend.remove()
+        print(f"processed {plot_cols}")

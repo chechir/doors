@@ -15,5 +15,7 @@ setup(
         "scikit-learn",
         "scipy",
         "numpy",
+        "matplotlib",
+        "matplotlib_venn",
     ),
 )

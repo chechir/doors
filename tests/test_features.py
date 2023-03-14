@@ -10,6 +10,8 @@ from doors.features import (
     grouped_days_since_result,
     grouped_ema,
     grouped_lagged_decay,
+    grouped_lagged_ema,
+    lagged_ema,
 )
 
 
@@ -80,19 +82,45 @@ def test_grouped_days_since_result():
 
 
 def test_ema():
-    array = np.array([5, 10, 1, 0, 0])
-    assert np.allclose(array, ema(array, alpha=1))
-    expected = [5.0, 7.5, 4.25, 2.125, 1.0625]
-    assert np.allclose(expected, ema(array, alpha=0.5))
+    array = pd.Series(np.array([10, 0, 0, 0, 0, 0]))
+    assert np.allclose(array, ema(array, n_period=1))
+    expected = [10.0, 5.0, 2.5, 1.25, 0.625, 0.3125]
+    assert np.allclose(expected, ema(array, n_period=3))
+
+
+def test_lagged_ema():
+    array = pd.Series(np.array([10, 0, 0, 0, 0, 0]))
+    expected = [-1, 10, 0, 0, 0, 0]
+    assert np.allclose(expected, lagged_ema(array, n_period=1, init=-1))
+    expected = [-2, -2, 10.0, 5.0, 2.5, 1.25]
+    assert np.allclose(expected, lagged_ema(array, n_period=3, shift=2, init=-2))
 
 
 def test_grouped_ema():
     df = pd.DataFrame(
         {
             "group": np.array([1, 1, 1, 1, 1, 2, 2, 2, 2, 2]),
-            "price": np.array([5, 10, 1, 0, 0] * 2),
+            "price": np.array([10, 0, 10, 0, 0] * 2),
         }
     )
+    expected = [10, 0, 10, 0, 0] * 2
     assert np.allclose(df["price"], grouped_ema(df, "price", 1, "group"))
-    expected = [5.0, 7.5, 4.25, 2.125, 1.0625] * 2
-    assert np.allclose(expected, grouped_ema(df, "price", 0.5, "group"))
+    expected = [10.0, 5.0, 7.5, 3.75, 1.875] * 2
+    assert np.allclose(expected, grouped_ema(df, "price", 3, "group"))
+
+
+def test_grouped_lagged_ema():
+    df = pd.DataFrame(
+        {
+            "group": np.array([1, 1, 1, 1, 1, 2, 2, 2, 2, 2]),
+            "price": np.array([10, 0, 10, 0, 0] * 2),
+        }
+    )
+    expected = [-1, 10, 0, 10, 0] * 2
+    assert np.allclose(
+        expected, grouped_lagged_ema(df, "price", 1, "group", shift=1, init=-1)
+    )
+    expected = [-2.0, -2.0, 10.0, 5.0, 7.5] * 2
+    assert np.allclose(
+        expected, grouped_lagged_ema(df, "price", 3, "group", shift=2, init=-2)
+    )

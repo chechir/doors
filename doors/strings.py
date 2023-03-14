@@ -2,6 +2,7 @@
 # pylint: disable=invalid-name
 import functools
 import re
+
 # import unicodedata
 from string import punctuation as PUNCTUATIONS
 

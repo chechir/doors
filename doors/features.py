@@ -3,6 +3,7 @@ import copy
 from functools import partial
 
 import numpy as np
+import pandas as pd
 
 from doors import np as wnp
 
@@ -104,61 +105,53 @@ def days_since_result(v, dates, value=1):
     return diffs
 
 
-# def grouped_lagged_ema(df, calc_colname, alpha, groupby):
-#     v = df[calc_colname]
-#     func = partial(lagged_ema, alpha=alpha)
-#     result = wnp.group_apply(v, df[groupby], func)
-#     return result
-#
-# def grouped_lagged_dema(df, calc_colname, span, beta, groupby):
-#     v = df[calc_colname]
-#     func = partial(lagged_dema, span=span, beta=beta)
-#     result = ss.np.group_apply(v, df[groupby], func)
-#     return result
-#
-# def grouped_lagged_ema(df, calc_colname, alpha, groupby):
-#     # This is an improvement of pesky_quiz function
-#     func = partial(wg.lagged_ema, alpha=alpha)
-#     result = ss.np.group_apply(df[calc_colname], df[groupby], func)
-#     return result
-
-
-def grouped_ema(df, col, alpha, groupby):
-    v = df[col].values
-    func = partial(ema, alpha=alpha)
-    result = wnp.group_apply(v, df[groupby].values, func)
+def grouped_ema(df: pd.DataFrame, col: str, n_period: float, groupby: str) -> pd.Series:
+    func = partial(ema, n_period=n_period)
+    result = df.groupby(groupby)[col].transform(func)
     return result
 
 
-def ema(v, alpha=0.2):
-    result = np.nan * v
-    result[0] = v[0]
+def ema(v: pd.Series, n_period=5):
+    if n_period < 1:
+        raise ValueError("n_period can't be less than 1")
+    alpha = 2.0 / (1 + n_period)
+    result = np.nan * np.zeros(len(v))
+    vals = v.values
+    result[0] = vals[0]
     for i in range(1, len(v)):
-        result[i] = alpha * v[i] + (1 - alpha) * result[i - 1]
+        result[i] = alpha * vals[i] + (1 - alpha) * result[i - 1]
     return result
 
 
-def lagged_ema(v, alpha):
-    emas = ema(v, alpha)
-    emas = wnp.lag(emas, init=0)
+def lagged_ema(v, n_period, shift=1, init=0):
+    emas = ema(v, n_period)
+    emas = wnp.lag(emas, init=init, shift=shift)
     return emas
 
 
-def dema(v, span, beta):
-    """needs test"""
-    intercept = v * np.nan
-    slope = v * np.nan
-    intercept[0] = v[0]
-    slope[0] = 0
-    alpha = 2.0 / (1 + span)
-    for i in range(1, len(v)):
-        intercept[i] = alpha * v[i] + (1 - alpha) * (intercept[i - 1] + slope[i - 1])
-        slope[i] = beta * (intercept[i] - intercept[i - 1]) + (1 - beta) * slope[i - 1]
-    return intercept
+def grouped_lagged_ema(
+    df: pd.DataFrame, col: str, n_period: float, groupby: str, shift=1, init=0
+) -> pd.Series:
+    func = partial(lagged_ema, n_period=n_period, shift=shift, init=init)
+    result = df.groupby(groupby)[col].transform(func)
+    return result
 
 
-def lagged_dema(v, span, beta):
+def dema(v: pd.Series, n_period):
+    """
+    The Formula for the Double Exponential Moving Average Is:
+    DEMA=2×EMA(n_period) − EMA of EMA(n_period)
+
+    where:
+    n_period = Look-back period
+    """
+    ema_v = pd.Series(ema(v, n_period))
+    ema_of_ema = ema(ema_v, n_period)
+    return (ema_v * 2) - ema_of_ema
+
+
+def lagged_dema(v, n_periods):
     """needs test"""
-    demas = dema(v, span, beta)
+    demas = dema(v, n_periods)
     demas = wnp.lag(demas, init=0)
     return demas
