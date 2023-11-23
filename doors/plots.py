@@ -1,5 +1,9 @@
+from typing import Union
+
 import numpy as np
 import pandas as pd
+import plotly.express as px
+import plotly.offline as pyo
 import seaborn as sns
 from matplotlib import pyplot as plt
 from matplotlib_venn import venn2
@@ -99,3 +103,25 @@ def plot_pairplot_in_sections(
         if not legend:
             g._legend.remove()
         print(f"processed {plot_cols}")
+
+
+def get_actual_vs_prediction_plot(
+    actual: Union[np.ndarray, pd.Series],
+    predictions: Union[np.ndarray, pd.Series],
+    x_values: Union[np.ndarray, pd.Series] = None,
+) -> None:
+    """Plot actual vs prodeiction arrays or series"""
+    data_dict = {"Actual": actual, "Predictions": predictions}
+    if x_values is not None:
+        data_dict["X"] = x_values
+    data = pd.DataFrame(data_dict)
+
+    fig = px.scatter(
+        data,
+        x="X",
+        y=["Actual", "Predictions"],
+        labels={"X": "X-Axis Label", "value": "Value"},
+        title="Actual vs. Predictions",
+    )
+
+    pyo.iplot(fig)

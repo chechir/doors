@@ -13,7 +13,7 @@ import pandas as pd
 
 
 def IQR(v):
-    """Caclualtes intercuantile range (for Jason)"""
+    """Caclualtes interquantile range"""
     series = pd.Series(v)
     q75 = series.quantile(0.75)
     q25 = series.quantile(0.25)
