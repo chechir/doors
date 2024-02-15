@@ -149,3 +149,11 @@ def ensemble_predictions(predictions, weights, type_="linear"):
         res = np.average([rankdata(p) for p in predictions], weights=weights, axis=0)
         return res / (len(res) + 1)
     return res
+
+
+def nicer_grid_results(grid_search):
+    """For sklearn seacrch grid returns a nice pd dataframe with the results"""
+    grid_results = pd.DataFrame(grid_search.cv_results_).sort_values("rank_test_score")
+    cols = [col for col in grid_results if "param_" in col]
+    cols = ["rank_test_score", "mean_test_score", "std_test_score"] + cols
+    return grid_results[cols]

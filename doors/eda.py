@@ -1,7 +1,7 @@
 """ Functions to help with Exploratory data analysis """
 import pandas as pd
 from IPython.display import display
-from matplotlibe import pyplot as plt
+from matplotlib import pyplot as plt
 
 from doors.setup_logger import get_logger
 
@@ -22,10 +22,12 @@ def get_correlations_for_col(
     return corr
 
 
-def vc(df, column):
+def val_counts(df, column):
+    """Displays pandas value counts with a %"""
     vc_df = df.reset_index().groupby([column]).size().to_frame("count")
     vc_df["percentage (%)"] = vc_df["count"].div(sum(vc_df["count"])).mul(100)
-    logger.INFO(f'STATUS: Value counts for "{column}"...')
+    vc_df = vc_df.sort_values(by=["percentage (%)"], ascending=False)
+    logger.info(f'STATUS: Value counts for "{column}"...')
     display(vc_df)
 
 
