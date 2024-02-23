@@ -8,35 +8,6 @@ import pandas as pd
 from doors import np as wnp
 
 
-def categorical_to_numeric(df, column):
-    """convert text column into numeric using the character codes"""
-
-    def char_to_numeric(char):
-        return str(ord(char))
-
-    def text_to_numeric(text):
-        text = str(text).strip()
-        text = text[:10]
-        text = text.lower()
-        numeric_chars = map(char_to_numeric, text)
-        result = "".join(numeric_chars)
-        result = float(result)
-        return result
-
-    result = map(text_to_numeric, df[column])
-    result = np.log(np.array(result))
-    return result
-
-
-def categorical_to_frequency(df, column):
-    """convert categorical column using the frequency of elements"""
-    ixs = wnp.get_group_ixs(df[column].values)
-    res = np.zeros(len(df))
-    for ix in ixs.values():
-        res[ix] = len(ix)
-    return res.astype(np.int64)
-
-
 def grouped_lagged_decay(df, groupby, col, fillna=0, decay=1):
     """Grouped lagged decay"""
     values = wnp.fillna(df[col].values, 0)
@@ -112,6 +83,7 @@ def grouped_ema(df: pd.DataFrame, col: str, n_period: float, groupby: str) -> pd
 
 
 def ema(v: pd.Series, n_period=5):
+    """ Exponential moving average for a vector"""
     if n_period < 1:
         raise ValueError("n_period can't be less than 1")
     alpha = 2.0 / (1 + n_period)
@@ -155,3 +127,34 @@ def lagged_dema(v, n_periods):
     demas = dema(v, n_periods)
     demas = wnp.lag(demas, init=0)
     return demas
+
+
+def categorical_to_numeric(df, column):
+    """convert text column into numeric using the character codes"""
+
+    def char_to_numeric(char):
+        return str(ord(char))
+
+    def text_to_numeric(text):
+        text = str(text).strip()
+        text = text[:10]
+        text = text.lower()
+        numeric_chars = map(char_to_numeric, text)
+        result = "".join(numeric_chars)
+        result = float(result)
+        return result
+
+    result = map(text_to_numeric, df[column])
+    result = np.log(np.array(result))
+    return result
+
+
+def categorical_to_frequency(df, column):
+    """convert categorical column using the frequency of elements"""
+    ixs = wnp.get_group_ixs(df[column].values)
+    res = np.zeros(len(df))
+    for ix in ixs.values():
+        res[ix] = len(ix)
+    return res.astype(np.int64)
+
+
