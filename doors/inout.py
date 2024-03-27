@@ -13,7 +13,7 @@ def append_csv(data, path):
         print("Dont include the user path as ~!, use os.path.expanduser")
     if os.path.isfile(path):
         current_log = pd.read_csv(path)
-        current_log = current_log.append(to_log, ignore_index=True, sort=True)
+        current_log = current_log._append(to_log, ignore_index=True, sort=True)
     else:
         current_log = to_log
     current_log.to_csv(path, index=False)

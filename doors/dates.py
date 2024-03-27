@@ -3,7 +3,6 @@ import re
 
 import numpy as np
 import pandas as pd
-import pytz
 
 
 def get_day_of_year(dates):
@@ -30,12 +29,6 @@ def _get_timestamp_attribute(dates, attr):
     timestamps = pd.Series(dates)
     result = timestamps.apply(lambda x: getattr(x, attr)).values
     return result
-
-
-def utc_to_bst(dt):
-    dt = pytz.timezone("utc").localize(dt)
-    bst_dt = dt.astimezone(pytz.timezone("Europe/London"))
-    return bst_dt
 
 
 def extract_timestamp(string):
@@ -78,7 +71,7 @@ def get_months(dates):
 
 
 def get_datetime_now():
-    return datetime.datetime.utcnow()
+    return datetime.datetime.now(datetime.UTC)
 
 
 def get_datetime_end_of_day():

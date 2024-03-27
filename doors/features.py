@@ -1,6 +1,7 @@
 # pylint: disable=invalid-name
 import copy
 from functools import partial
+from typing import Union
 
 import numpy as np
 import pandas as pd
@@ -61,8 +62,19 @@ def grouped_days_since_result(
     return result
 
 
-def days_since_result(v, dates, value=1):
-    dates = dates.astype("datetime64[ms]")
+def days_since_result(
+    v: Union[np.ndarray, pd.Series],
+    dates: Union[np.ndarray, pd.core.indexes.datetimes.DatetimeIndex],
+    value=1,
+):
+    """Number of days since the array was equal of higher than the given value"""
+    if isinstance(dates, pd.core.indexes.datetimes.DatetimeIndex):
+        dates = dates.astype("datetime64[ms]").values
+    else:
+        dates = dates.astype("datetime64[ms]")
+    if isinstance(v, pd.Series):
+        v = v.values
+
     date_of_last_win = copy.deepcopy(dates)
     win_ix = v >= value
     date_of_last_win[~win_ix] = np.datetime64("NaT")
@@ -77,13 +89,16 @@ def days_since_result(v, dates, value=1):
 
 
 def grouped_ema(df: pd.DataFrame, col: str, n_period: float, groupby: str) -> pd.Series:
+    """
+    Calculate EMA for each group
+    """
     func = partial(ema, n_period=n_period)
     result = df.groupby(groupby)[col].transform(func)
     return result
 
 
 def ema(v: pd.Series, n_period=5):
-    """ Exponential moving average for a vector"""
+    """Exponential moving average for a vector"""
     if n_period < 1:
         raise ValueError("n_period can't be less than 1")
     alpha = 2.0 / (1 + n_period)
@@ -156,5 +171,3 @@ def categorical_to_frequency(df, column):
     for ix in ixs.values():
         res[ix] = len(ix)
     return res.astype(np.int64)
-
-

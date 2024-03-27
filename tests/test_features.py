@@ -5,6 +5,7 @@ import pandas as pd
 
 from doors.features import (
     categorical_to_frequency,
+    days_since_result,
     days_to_first_event,
     ema,
     grouped_days_since_result,
@@ -13,6 +14,7 @@ from doors.features import (
     grouped_lagged_ema,
     lagged_ema,
 )
+from doors.np import nan_allclose
 
 
 def test_categorical_to_frequency():
@@ -59,26 +61,42 @@ def test_grouped_days_since_result():
         {
             "runner_id": np.array([1, 1, 1, 1, 1, 2, 2, 2, 2, 2]),
             "win_flag": np.array([1, 0, 1, 0, 0, 1, 0, 1, 0, 0]),
-            "scheduled_time": np.array(
+            "scheduled_time": pd.to_datetime(
                 [
-                    "2004-01-01",
-                    "2004-01-02",
-                    "2004-01-03",
-                    "2004-01-04",
-                    "2004-01-06",
-                    "2004-01-01",
-                    "2004-01-02",
-                    "2004-01-03",
-                    "2004-01-04",
-                    "2004-01-06",
+                    "2024-01-01",
+                    "2024-01-02",
+                    "2024-01-03",
+                    "2024-01-04",
+                    "2024-01-06",
+                    "2024-01-01",
+                    "2024-01-02",
+                    "2024-01-03",
+                    "2024-01-04",
+                    "2024-01-06",
                 ]
-            ).astype("datetime64[ms]"),
+            ),
         }
     )
     expected = [-1, 1, 2, 1, 3, -1, 1, 2, 1, 3]
     # result = features.days_to_previous_result(df, col='win_flag', value=1)
     result = grouped_days_since_result(df, groupby="runner_id", col="win_flag")
     assert np.allclose(expected, result)
+
+
+def test_days_since_result():
+    series = pd.Series([10, 20, 10, 0, 8])
+    dates = pd.to_datetime(
+        [
+            "2024-01-01",
+            "2024-01-02",
+            "2024-01-04",
+            "2024-01-10",
+            "2024-01-20",
+        ]
+    )
+    result = days_since_result(series, dates, value=5)
+    expected = [np.nan, 1, 2, 6, 16]
+    assert nan_allclose(result, expected)
 
 
 def test_ema():
