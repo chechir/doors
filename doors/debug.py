@@ -17,7 +17,7 @@ def time_func(func):
         stop_time = time.time()
 
         exec_time = stop_time - start_time
-        LOGGER.info(f"Time Func: `{func_name}` call took {exec_time:.4f}s.")
+        LOGGER.info(f"Time Func: '{func_name}' call took {exec_time: .4f}s.")
 
         # This makes the execution time available within this namespace
         globals()["_last_func_execution_time"] = exec_time

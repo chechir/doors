@@ -2,7 +2,7 @@
 build-wheel:
 	@echo '[Building wheel]'
 	@echo -n '[$$] '
-	python3 setup.py bdist_wheel --universal
+	poetry build
 
 .PHONY: upload-wheel
 upload-wheel:
