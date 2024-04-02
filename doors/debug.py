@@ -1,6 +1,10 @@
 import time
 from functools import partial
 
+from doors.setup_logger import get_logger
+
+LOGGER = get_logger(__name__)
+
 
 def time_func(func):
     """A decorator that will print the time a function took to run."""
@@ -13,7 +17,7 @@ def time_func(func):
         stop_time = time.time()
 
         exec_time = stop_time - start_time
-        print("\nTime Func: `{}` call took {:.4f}s.\n".format(func_name, exec_time))
+        LOGGER.info(f"Time Func: `{func_name}` call took {exec_time:.4f}s.")
 
         # This makes the execution time available within this namespace
         globals()["_last_func_execution_time"] = exec_time
