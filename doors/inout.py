@@ -3,6 +3,14 @@ import os
 import pickle
 
 import pandas as pd
+import yaml
+
+
+def read_yaml(filepath: str) -> dict:
+    """parse a yaml file and returns a dictionary with the data"""
+    with open(filepath) as file:
+        ans = yaml.safe_load(file)
+        return ans
 
 
 def append_csv(data, path):
