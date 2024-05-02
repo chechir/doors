@@ -1,9 +1,29 @@
+import hashlib
 import json
 import os
 import pickle
 
 import pandas as pd
 import yaml
+
+
+def get_md5_hash(file_path):
+    """
+    Calculate the MD5 hash of a file given its file path.
+
+    :param file_path: Path to the file
+    :return: The MD5 hash of the file as a hex string
+    """
+    hash_md5 = hashlib.md5()
+    try:
+        with open(file_path, "rb") as f:
+            for chunk in iter(lambda: f.read(4096), b""):
+                hash_md5.update(chunk)
+        return hash_md5.hexdigest()
+    except FileNotFoundError:
+        return "File not found."
+    except Exception as e:
+        return f"An error occurred: {e}"
 
 
 def read_yaml(filepath: str) -> dict:
