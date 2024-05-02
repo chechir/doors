@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "doors"
-version = "0.0.8"
+version = "0.1.0"
 description = "General tools for machine learning and data processing"
 authors = ["Matias Thayer <matias.thayer@gmail.com>"]
 license = "MIT"
