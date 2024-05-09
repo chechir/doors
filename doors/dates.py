@@ -71,7 +71,7 @@ def get_months(dates):
 
 
 def get_datetime_now():
-    return datetime.datetime.now(datetime.UTC)
+    return datetime.datetime.now(datetime.timezone.utc)
 
 
 def get_datetime_end_of_day():
