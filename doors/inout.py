@@ -22,8 +22,6 @@ def get_md5_hash(file_path):
         return hash_md5.hexdigest()
     except FileNotFoundError:
         return "File not found."
-    except Exception as e:
-        return f"An error occurred: {e}"
 
 
 def read_yaml(filepath: str) -> dict:
