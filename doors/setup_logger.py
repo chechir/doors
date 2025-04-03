@@ -3,7 +3,7 @@ from typing import Union
 
 logging.basicConfig(
     level=logging.INFO,
-    format="%(asctime)s %(levelname)s: %(message)s",
+    format="%(asctime)s %(levelname)s [%(name)s]: %(message)s",
     datefmt="%d/%m/%Y %H:%M:%S",
 )
 
