@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "doors"
-version = "0.1.1"
+version = "0.2.1"
 description = "General tools for machine learning and data processing"
 authors = ["Matias Thayer <matias.thayer@gmail.com>"]
 license = "MIT"
@@ -9,12 +9,8 @@ license = "MIT"
 python = "^3.8"
 pyarrow = ">=10.0.0"
 pandas = ">=2.0.2"
-scikit-learn = ">=1.2.0"
-scipy = ">=1.10.0"
-numexpr = ">=2.1.0"
 pyyaml = ">=5.0.1"
-matplotlib = ">=3.1.1"
-paramiko = ">=3.1.1"
+scipy = ">=1.10.0"
 
 
 [tool.poetry.dev-dependencies]

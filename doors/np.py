@@ -1,8 +1,7 @@
-""" Set of tools to help with vectorial calculations and cleaning """
-import copy
+"""Set of tools to help with vectorial calculations and cleaning"""
+
 from collections import OrderedDict, defaultdict
 
-import numexpr
 import numpy as np
 import pandas as pd
 
@@ -256,36 +255,6 @@ def nan_allclose(x, y):
     is_close = np.isclose(x, y)
     nan_close = is_close | (nan_ix_x & nan_ix_y)
     return np.all(nan_close)
-
-
-def replace(values, mapping_dict):
-    values = copy.deepcopy(values)
-    for k in mapping_dict:
-        ix = nan_equality(values, k)
-        values[ix] = mapping_dict[k]
-    return values
-
-
-def nan_equality(ax, bx):
-    """Compares two arrays, nans are equal."""
-    if not isinstance(ax, np.ndarray) and not isinstance(ax, list):
-        ax = np.array([ax])
-    if not isinstance(bx, np.ndarray) and not isinstance(bx, list):
-        bx = np.array([bx])
-    if not isinstance(ax, np.ndarray):
-        ax = np.array(ax)
-    if not isinstance(bx, np.ndarray):
-        bx = np.array(bx)
-    if type(ax) in [pd.DataFrame, pd.Series]:
-        ax = ax.values
-    if type(bx) in [pd.DataFrame, pd.Series]:
-        bx = bx.values
-    if ax.dtype.kind in ["U", "O"] or bx.dtype.kind in ["U", "O"]:
-        # if one is a S then both must be S
-        ax = ax.astype("S")
-        bx = bx.astype("S")
-    are_equal = numexpr.evaluate("(ax==bx)|((ax!=ax)&(bx!=bx))")
-    return are_equal
 
 
 def ffill(values):

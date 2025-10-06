@@ -171,3 +171,44 @@ def categorical_to_frequency(df, column):
     for ix in ixs.values():
         res[ix] = len(ix)
     return res.astype(np.int64)
+
+
+def rolling_func(v: pd.Series, window=4, func: str = "sum", fillna=-1) -> pd.Series:
+    roll = v.rolling(window=window, min_periods=window)
+    f = func.lower()
+    if f == "sum":
+        res = roll.sum()
+    elif f == "mean":
+        res = roll.mean()
+    elif f == "median":
+        res = roll.median()
+    elif f == "max":
+        res = roll.max()
+    else:
+        raise ValueError("fun must be 'sum', 'mean', 'median', 'max'")
+
+    return res.fillna(fillna)
+
+
+def lagged_rolling_func(
+    v: pd.Series, window=4, func: str = "sum", fillna=-1, shift=1
+) -> pd.Series:
+    res = rolling_func(v, window=window, func=func, fillna=fillna)
+
+    return res.shift(shift).fillna(fillna)
+
+
+def grouped_lagged_rolling_func(
+    df: pd.DataFrame,
+    groupby: str,
+    col: str,
+    window: str,
+    func: str,
+    fillna: int,
+    shift: int,
+):
+    """Grouped rolling func"""
+    f = partial(
+        lagged_rolling_func, window=window, func=func, fillna=fillna, shift=shift
+    )
+    return df.groupby(groupby)[col].transform(f)

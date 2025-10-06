@@ -12,7 +12,10 @@ from doors.features import (
     grouped_ema,
     grouped_lagged_decay,
     grouped_lagged_ema,
+    grouped_lagged_rolling_func,
     lagged_ema,
+    lagged_rolling_func,
+    rolling_func,
 )
 from doors.np import nan_allclose
 
@@ -142,3 +145,28 @@ def test_grouped_lagged_ema():
     assert np.allclose(
         expected, grouped_lagged_ema(df, "price", 3, "group", shift=2, init=-2)
     )
+
+
+def test_rolling_func():
+    v = pd.Series([1, 2, 3, 4, 5, 6])
+    result = rolling_func(v, window=4, fillna=-1, func="sum")
+    expected = pd.Series([-1, -1, -1, 10, 14, 18])
+    assert np.allclose(expected, result)
+
+
+def test_lagged_rolling_func():
+    v = pd.Series([1, 2, 3, 4, 5, 6])
+    result = lagged_rolling_func(v, window=4, fillna=-1, func="sum")
+    expected = pd.Series([-1, -1, -1, -1, 10, 14])
+    assert np.allclose(expected, result)
+
+
+def test_grouped_lagged_rolling_func():
+    v = [1, 2, 3, 4, 5, 6]
+    df = pd.DataFrame({"group": [1] * 6 + [2] * 6, "col": v * 2})
+    result = grouped_lagged_rolling_func(
+        df, "group", "col", window=4, func="sum", fillna=-1, shift=1
+    )
+    expected = pd.Series([-1, -1, -1, -1, 10, 14] * 2)
+
+    assert np.allclose(expected, result)

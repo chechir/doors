@@ -1,6 +1,5 @@
 """ Functions to help with Exploratory data analysis """
 import pandas as pd
-from matplotlib import pyplot as plt
 
 from doors.setup_logger import get_logger
 
@@ -28,12 +27,3 @@ def val_counts(df, column):
     vc_df = vc_df.sort_values(by=["percentage (%)"], ascending=False)
     logger.info(f'STATUS: Value counts for "{column}"...')
     return vc_df
-
-
-def pie(df, column):
-    (
-        df[column]
-        .value_counts()
-        .plot(kind="pie", autopct="%1.1f%%", title=f'Pie chart of "{column}"')
-    )
-    return plt.show()
