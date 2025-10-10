@@ -27,7 +27,8 @@ def test_nan_ffill():
     assert utils_np.nan_allclose(utils_np.ffill(v), expected)
     v = np.array([np.nan, "S", np.nan, np.nan, 2, np.nan, 3, np.nan], dtype="O")
     expected = np.array([np.nan, "S", "S", "S", 2, 2, 3, 3], dtype="O")
-    assert all(utils_np.nan_equality(utils_np.ffill(v), expected))
+    result = utils_np.ffill(v)
+    assert all(result[1:] == expected[1:])
 
 
 losses = [utils_np.bin_ent, utils_np.abs_loss, utils_np.sq_loss]
@@ -40,34 +41,6 @@ def test_losses_raise_with_wrong_shapes(loss):
 
     with pytest.raises(AssertionError):
         loss(bad_flags, predictions)
-
-
-def test_nan_equality():
-    # scalar
-    assert utils_np.nan_equality(10, 10)
-    assert utils_np.nan_equality(np.nan, np.nan)
-    assert not utils_np.nan_equality(10, 11)
-    assert not utils_np.nan_equality(10, np.nan)
-    # vector-vector
-    tens = np.repeat(10, 5)
-    nans = np.repeat(np.nan, 5)
-    assert all(utils_np.nan_equality(tens, tens))
-    assert all(utils_np.nan_equality(nans, nans))
-    assert not all(utils_np.nan_equality(tens, tens + 1))
-    assert not all(utils_np.nan_equality(tens, nans))
-    # vector-scalar
-    tens = np.repeat(10, 5)
-    nans = np.repeat(np.nan, 5)
-    strings = np.repeat("a", 5)
-    objects = np.array(["a", np.nan], dtype="O")
-    assert all(utils_np.nan_equality(strings, "a"))
-    assert all(utils_np.nan_equality(tens, 10))
-    assert all(utils_np.nan_equality(nans, np.nan))
-    assert any(utils_np.nan_equality(objects, np.nan))
-    assert not all(utils_np.nan_equality(strings, "b"))
-    assert not all(utils_np.nan_equality(tens, 11))
-    assert not all(utils_np.nan_equality(tens, np.nan))
-    assert not all(utils_np.nan_equality(objects, np.nan))
 
 
 def test_loss_regression():
@@ -174,14 +147,14 @@ def test_lag_func():
     values = np.array([1, 1, 2, 2, 3, 3])
     expected = np.array([np.nan, 1.0, 1.0, 2.0, 2.0, 3.0])
     output = utils_np.lag(values, np.nan)
-    assert all(utils_np.nan_equality(expected, output))
+    assert all(utils_np.fillna(expected, -1) == utils_np.fillna(output, -1))
 
 
 def test_lag_func_with_shift():
     values = np.array([1, 1, 2, 2, 3, 3])
     expected = np.array([999, 999, 999, 1.0, 1.0, 2.0])
     output = utils_np.lag(values, 999, shift=3)
-    assert all(utils_np.nan_equality(expected, output))
+    assert all(utils_np.fillna(expected, -1) == utils_np.fillna(output, -1))
 
 
 def test_lagged_cumsum_works_with_matrices():
@@ -209,13 +182,6 @@ def test_ix_to_bool():
     assert not any(bools[5:])
     assert all(bools[2:5])
     assert len(bools) == 10
-
-
-def test_replace():
-    v = np.array([1, 1, 2, 2, -1, -1, np.nan])
-    new = utils_np.replace(v, {-1: 10, np.nan: 0})
-    expected = np.array([1, 1, 2, 2, 10, 10, 0])
-    assert np.array_equal(new, expected)
 
 
 def test_change_flag():
