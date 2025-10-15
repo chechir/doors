@@ -1,0 +1,45 @@
+name: unit-tests
+
+on:
+  push:
+    branches: ["*"]
+  pull_request:
+    branches: ["*"]
+
+jobs:
+  unit-tests:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.12"]
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v3
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Cache pip
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/pyproject.toml') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      - name: Install dependencies
+        run: |
+          python -m pip install .
+          python -m pip install --upgrade pip
+          python -m pip install pytest pytest-cov
+          # additional libraries needed for some tests
+          python -m pip install scikit-learn
+
+      - name: Test with pytest and coverage report
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+          DISPLAY: ":99"
+        run: |
+          python -m pytest tests --cov=doors -s
