@@ -8,6 +8,7 @@ import seaborn as sns
 from matplotlib import pyplot as plt
 from matplotlib_venn import venn2
 from sklearn import linear_model, preprocessing
+from sklearn.metrics import f1_score, roc_auc_score
 
 from doors.np import rolling_mean
 
@@ -125,3 +126,26 @@ def get_actual_vs_prediction_plot(
     )
 
     pyo.iplot(fig)
+
+
+def plot_roc(truth, preds, title="Receiver Operating Characteristic", threshold=0.5):
+    # require extra library:
+    from plot_metric.functions import BinaryClassification
+
+    print("AUC: ", np.round(roc_auc_score(truth, preds), 5))
+    bc = BinaryClassification(truth, preds, labels=[0, 1], threshold=threshold)
+    plt.figure(figsize=(10, 5))
+    bc.plot_roc_curve(title=title)
+    plt.show()
+
+
+def plot_precision_recall_curve(
+    truth, preds, title="Precision-Recall Curve", threshold=0.5
+):
+    from plot_metric.functions import BinaryClassification
+
+    print("F1: ", np.round(f1_score(truth, preds > threshold), 8))
+    bc = BinaryClassification(truth, preds, labels=[0, 1], threshold=threshold)
+    plt.figure(figsize=(10, 5))
+    bc.plot_precision_recall_curve(title=title)
+    plt.show()

@@ -1,12 +1,14 @@
-""" general function to help with modelling (feature selection, ixs,
-    dimensionality reduction
+"""general function to help with modelling (feature selection, ixs,
+dimensionality reduction
 """
+
 from collections import OrderedDict
 
 import numpy as np
 import pandas as pd
 from scipy.stats import ks_2samp, pearsonr, rankdata
 from sklearn.decomposition import TruncatedSVD
+from sklearn.model_selection._search import GridSearchCV
 
 # pylint: disable=invalid-name
 # pylint: disable=missing-docstring
@@ -151,9 +153,22 @@ def ensemble_predictions(predictions, weights, type_="linear"):
     return res
 
 
-def nicer_grid_results(grid_search):
+def nicer_grid_results(grid_search: GridSearchCV) -> pd.DataFrame:
     """For sklearn seacrch grid returns a nice pd dataframe with the results"""
     grid_results = pd.DataFrame(grid_search.cv_results_).sort_values("rank_test_score")
     cols = [col for col in grid_results if "param_" in col]
     cols = ["rank_test_score", "mean_test_score", "std_test_score"] + cols
     return grid_results[cols]
+
+
+def get_coefs(lin_model, feats: list[str]) -> pd.DataFrame:
+    """Obtain coefficients from a skleanr linear model"""
+    coef_vals = lin_model.coef_[0]
+    coef_df = pd.DataFrame({"coef": coef_vals, "abs_coef": pd.Series(coef_vals).abs()})
+    coef_df.index = feats
+    is_coef_gt0 = coef_df["abs_coef"] > 0
+    print(
+        f"Number of features selected by lasso: {(is_coef_gt0).sum()} out of"
+        f" {len(feats)}"
+    )
+    return coef_df.sort_values("abs_coef", ascending=False)["coef"]
