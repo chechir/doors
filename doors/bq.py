@@ -1,4 +1,5 @@
-""" Functions to deal with big Query"""
+"""Functions to deal with big Query"""
+
 from typing import Optional
 
 import pandas as pd
@@ -9,7 +10,7 @@ def read_bq_data(
     query_or_table: str,
     project_id: str,
     private_key: Optional[str] = None,
-    progress_bar_type: str = "tqdm",
+    progress_bar_type: str | None = "tqdm",
 ) -> pd.DataFrame:
     """Read a table from BQ"""
     result_df = read_gbq(
