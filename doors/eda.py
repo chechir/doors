@@ -1,4 +1,5 @@
-""" Functions to help with Exploratory data analysis """
+"""Functions to help with Exploratory data analysis"""
+
 import pandas as pd
 
 from doors.setup_logger import get_logger
@@ -10,14 +11,14 @@ def get_correlations_for_col(
     data: pd.DataFrame, col: str, method="pearson"
 ) -> pd.DataFrame:
     corr = data.corr(numeric_only=True, method=method)[col]
-    corr = pd.DataFrame(
+    ans = pd.DataFrame(
         {
             "abs": corr.abs(),
             "corr": corr,
         }
     )
-    corr.sort_values("abs", ascending=False, inplace=True)
-    return corr
+    ans.sort_values("abs", ascending=False, inplace=True)
+    return ans
 
 
 def val_counts(df, column):

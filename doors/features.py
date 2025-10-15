@@ -1,7 +1,6 @@
 # pylint: disable=invalid-name
 import copy
 from functools import partial
-from typing import Union
 
 import numpy as np
 import pandas as pd
@@ -63,8 +62,8 @@ def grouped_days_since_result(
 
 
 def days_since_result(
-    v: Union[np.ndarray, pd.Series],
-    dates: Union[np.ndarray, pd.core.indexes.datetimes.DatetimeIndex],
+    v: np.ndarray | pd.Series,
+    dates: np.ndarray | pd.core.indexes.datetimes.DatetimeIndex,
     value=1,
 ):
     """Number of days since the array was equal of higher than the given value"""

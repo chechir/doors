@@ -156,12 +156,12 @@ def ensemble_predictions(predictions, weights, type_="linear"):
 def nicer_grid_results(grid_search: GridSearchCV) -> pd.DataFrame:
     """For sklearn seacrch grid returns a nice pd dataframe with the results"""
     grid_results = pd.DataFrame(grid_search.cv_results_).sort_values("rank_test_score")
-    cols = [col for col in grid_results if "param_" in col]
+    cols = [col for col in grid_results.columns if "param_" in col]
     cols = ["rank_test_score", "mean_test_score", "std_test_score"] + cols
     return grid_results[cols]
 
 
-def get_coefs(lin_model, feats: list[str]) -> pd.DataFrame:
+def get_coefs(lin_model, feats: list[str]) -> pd.Series:
     """Obtain coefficients from a skleanr linear model"""
     coef_vals = lin_model.coef_[0]
     coef_df = pd.DataFrame({"coef": coef_vals, "abs_coef": pd.Series(coef_vals).abs()})

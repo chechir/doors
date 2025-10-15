@@ -2,6 +2,7 @@ import hashlib
 import json
 import os
 import pickle
+from typing import Any
 
 import pandas as pd
 import yaml
@@ -24,7 +25,7 @@ def get_md5_hash(file_path):
         return "File not found."
 
 
-def read_yaml(filepath: str) -> dict:
+def read_yaml(filepath: str) -> Any:
     """parse a yaml file and returns a dictionary with the data"""
     with open(filepath) as file:
         ans = yaml.safe_load(file)

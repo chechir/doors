@@ -1,5 +1,3 @@
-from typing import Union
-
 import numpy as np
 import pandas as pd
 import plotly.express as px
@@ -68,17 +66,6 @@ def plot_venn2_primary_secondary(elements_by_group, venn_values, ax):
     return v
 
 
-def get_correlations_for_col(df: pd.DataFrame, col: str, top=20) -> pd.DataFrame:
-    corr = df.corr(numeric_only=True)[col]
-    corr = pd.DataFrame(
-        {
-            "abs": corr.abs(),
-            "corr": corr,
-        }
-    )
-    return corr
-
-
 def plot_pairplot_in_sections(
     data: pd.DataFrame,
     target_name: str,
@@ -107,9 +94,9 @@ def plot_pairplot_in_sections(
 
 
 def get_actual_vs_prediction_plot(
-    actual: Union[np.ndarray, pd.Series],
-    predictions: Union[np.ndarray, pd.Series],
-    x_values: Union[np.ndarray, pd.Series] = None,
+    actual: np.ndarray | pd.Series,
+    predictions: np.ndarray | pd.Series,
+    x_values: np.ndarray | pd.Series | None = None,
 ) -> None:
     """Plot actual vs prodeiction arrays or series"""
     data_dict = {"Actual": actual, "Predictions": predictions}
