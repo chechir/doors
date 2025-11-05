@@ -163,7 +163,10 @@ def nicer_grid_results(grid_search: GridSearchCV) -> pd.DataFrame:
 
 def get_coefs(lin_model, feats: list[str]) -> pd.Series:
     """Obtain coefficients from a skleanr linear model"""
-    coef_vals = lin_model.coef_[0]
+    if len(lin_model.coef_.shape) > 1:
+        coef_vals = lin_model.coef_[0]
+    else:
+        coef_vals = lin_model.coef_
     coef_df = pd.DataFrame({"coef": coef_vals, "abs_coef": pd.Series(coef_vals).abs()})
     coef_df.index = feats
     is_coef_gt0 = coef_df["abs_coef"] > 0
