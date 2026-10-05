@@ -40,7 +40,7 @@ def append_csv(data, path):
         print("Dont include the user path as ~!, use os.path.expanduser")
     if os.path.isfile(path):
         current_log = pd.read_csv(path)
-        current_log = current_log._append(to_log, ignore_index=True, sort=True)
+        current_log = pd.concat([current_log, to_log], ignore_index=True, sort=True)
     else:
         current_log = to_log
     current_log.to_csv(path, index=False)
@@ -72,7 +72,7 @@ def write_pickle(obj, path):
 
 
 def write_json(obj, path, encoder=None):
-    with open(path, "wb") as f:
+    with open(path, "w") as f:
         if encoder is None:
             json.dump(obj, f)
         else:
@@ -80,7 +80,7 @@ def write_json(obj, path, encoder=None):
 
 
 def read_json(path):
-    with open(path, "rb") as f:
+    with open(path, "r") as f:
         obj = json.load(f)
     return obj
 

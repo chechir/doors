@@ -41,7 +41,7 @@ def _make_partial_function_name(funcn):
     """Defines convention to labelling a partialised function."""
     assert isinstance(funcn, partial), "This function requires a partial fn."
     out = funcn.func.__name__
-    for key, value in funcn.keywords.iteritems():
+    for key, value in funcn.keywords.items():
         if callable(value):
             value = value.__name__
         out += "_[" + key + "=" + str(value) + "]"

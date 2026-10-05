@@ -75,9 +75,10 @@ def days_since_result(
 
     date_of_last_win = copy.deepcopy(dates)
     win_ix = v >= value
-    date_of_last_win[~win_ix] = np.datetime64("NaT")
+    nat_ms = np.datetime64("NaT", "ms")
+    date_of_last_win[~win_ix] = nat_ms
     # just to shift: shove a nat to start, drop the last value
-    date_of_last_win = np.r_[np.datetime64("NaT"), date_of_last_win[:-1]]
+    date_of_last_win = np.r_[nat_ms, date_of_last_win[:-1]]
     date_of_last_win = wnp.ffill(date_of_last_win)
     diffs = (dates - date_of_last_win).astype("timedelta64[D]")
     nan_ix = wnp.isnull(diffs)

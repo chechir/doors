@@ -8,7 +8,7 @@ import numpy as np
 import pandas as pd
 from scipy.stats import ks_2samp, pearsonr, rankdata
 from sklearn.decomposition import TruncatedSVD
-from sklearn.model_selection._search import GridSearchCV
+from sklearn.model_selection import GridSearchCV
 
 # pylint: disable=invalid-name
 # pylint: disable=missing-docstring
