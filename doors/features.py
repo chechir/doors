@@ -63,16 +63,15 @@ def grouped_days_since_result(
 
 def days_since_result(
     v: np.ndarray | pd.Series,
-    dates: np.ndarray | pd.core.indexes.datetimes.DatetimeIndex,
+    dates: np.ndarray | pd.DatetimeIndex,
     value=1,
 ):
     """Number of days since the array was equal of higher than the given value"""
-    if isinstance(dates, pd.core.indexes.datetimes.DatetimeIndex):
+    if isinstance(dates, pd.DatetimeIndex):
         dates = dates.astype("datetime64[ms]").values
     else:
         dates = dates.astype("datetime64[ms]")
-    if isinstance(v, pd.Series):
-        v = v.values
+    v = np.asarray(v)
 
     date_of_last_win = copy.deepcopy(dates)
     win_ix = v >= value

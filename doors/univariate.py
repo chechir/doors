@@ -51,6 +51,7 @@ def get_univariate_pvalues(
     for column in feats:
         # prepare single-feature design matrix (with intercept)
         X = sm.add_constant(data[column].fillna(0).astype(float))
+        y: pd.Series
         if model_type == "logreg":
             y = data[target_name].astype(int)
         elif model_type == "linreg":

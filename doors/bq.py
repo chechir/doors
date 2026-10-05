@@ -1,6 +1,6 @@
 """Functions to deal with big Query"""
 
-from typing import Optional
+from typing import Optional, cast
 
 import pandas as pd
 from pandas_gbq import read_gbq
@@ -20,7 +20,7 @@ def read_bq_data(
         dialect="standard",
         progress_bar_type=progress_bar_type,
     )
-    return result_df
+    return cast(pd.DataFrame, result_df)
 
 
 def bq_val_counts(

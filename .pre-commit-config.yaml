@@ -30,7 +30,12 @@ repos:
     hooks:
       - id: python-use-type-annotations
 
-  # - repo: https://github.com/pre-commit/mirrors-mypy
-  #   rev: v1.16.0
-  #   hooks:
-  #     - id: mypy
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.16.0
+    hooks:
+      - id: mypy
+        additional_dependencies:
+          - pandas>=2.0.2
+          - pandas-stubs
+          - types-paramiko
+          - types-PyYAML
