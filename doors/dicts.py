@@ -1,4 +1,4 @@
-""" dict functions """
+"""dict functions"""
 
 
 def flatten_dict(nested: dict) -> dict:

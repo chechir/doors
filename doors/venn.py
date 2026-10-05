@@ -1,4 +1,5 @@
-""" analysis """
+"""analysis"""
+
 import itertools
 from collections import OrderedDict
 

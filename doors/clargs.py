@@ -1,4 +1,5 @@
-""" functions to deal with clargs """
+"""functions to deal with clargs"""
+
 import sys
 
 import numpy as np
