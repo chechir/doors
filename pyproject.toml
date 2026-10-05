@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "doors"
-version = "0.2.4"
+version = "0.2.8"
 description = "General tools for machine learning and data processing"
 authors = ["Matias Thayer <matias.thayer@gmail.com>"]
 license = "MIT"
@@ -12,8 +12,8 @@ pandas = ">=2.0.2"
 pyyaml = ">=5.0.1"
 scipy = ">=1.10.0"
 paramiko = ">=3.1.1"
-snowflake-connector-python = ">=3.6.0"
-google-cloud-secret-manager = ">=2.16.0"
+# snowflake-connector-python = ">=3.6.0"
+# google-cloud-secret-manager = ">=2.16.0"
 
 
 [tool.poetry.dev-dependencies]
