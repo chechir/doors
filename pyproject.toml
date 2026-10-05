@@ -1,12 +1,12 @@
 [tool.poetry]
 name = "doors"
-version = "0.2.8"
+version = "0.3.0"
 description = "General tools for machine learning and data processing"
 authors = ["Matias Thayer <matias.thayer@gmail.com>"]
 license = "MIT"
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = ">=3.10,<4.0"
 pyarrow = ">=10.0.0"
 pandas = ">=2.0.2"
 pyyaml = ">=5.0.1"
@@ -16,11 +16,15 @@ paramiko = ">=3.1.1"
 # google-cloud-secret-manager = ">=2.16.0"
 
 
-[tool.poetry.dev-dependencies]
+[tool.poetry.group.dev.dependencies]
 pytest = ">=7.2.4"
 pytest-cov = ">=3.0.0"
 pdbp = ">=1.0.0"
 ruff = ">=0.8.6"
+mypy = ">=1.16.0"
+types-paramiko = ">=3.0.0"
+types-PyYAML = ">=6.0.0"
+pandas-stubs = {version = ">=2.0.2", python = ">=3.11"}
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
@@ -28,7 +32,33 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.ruff]
 line-length = 88
-target-version = "py38"
+target-version = "py312"
 
 [tool.ruff.lint]
 select = ["E", "F", "I"]  # pycodestyle + pyflakes + isort
+
+[tool.mypy]
+show_error_codes = true
+show_traceback = true
+namespace_packages = true
+warn_return_any = true
+warn_unused_configs = true
+explicit_package_bases = true
+
+# No stubs exist (or undeclared/optional deps) for these — don't fail on missing imports.
+[[tool.mypy.overrides]]
+module = [
+    "pandas_gbq",
+    "snowflake.*",
+    "google.cloud.*",
+    "statsmodels.*",
+    "sklearn.*",
+    "scipy.stats",
+    "matplotlib.*",
+    "matplotlib_venn",
+    "plotly.*",
+    "seaborn",
+    "unidecode",
+    "plot_metric.*",
+]
+ignore_missing_imports = true
