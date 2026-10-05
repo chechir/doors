@@ -53,7 +53,7 @@ def fillna(array, na_value):
 
 def get_str_columns(df):
     str_columns = [
-        col for col in df.columns if not np.issubdtype(df[col].dtype, np.number)
+        col for col in df.columns if not pd.api.types.is_numeric_dtype(df[col])
     ]
     return str_columns
 
@@ -160,7 +160,7 @@ def add_as_strings(*args, **kwargs):
 
 
 def _add_strings(v, w):
-    return np.core.defchararray.add(v, w)
+    return np.char.add(v, w)
 
 
 def get_group_ixs(*group_ids, **kwargs):

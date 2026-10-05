@@ -66,7 +66,7 @@ def add_as_strings(*args, **kwargs):
 
 
 def _add_strings(v, w):
-    return np.core.defchararray.add(v, w)
+    return np.char.add(v, w)
 
 
 def camelcase_to_underscore(string):
