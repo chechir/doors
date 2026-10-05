@@ -1,4 +1,5 @@
-""" functions to deal with outliers """
+"""functions to deal with outliers"""
+
 import numpy as np
 
 # pylint: disable=invalid-name
